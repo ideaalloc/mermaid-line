@@ -28,6 +28,5 @@ tmp
 /RUNNING_PID
 /.settings
 /.metadata
-**/src/main/webapp/libs/
 *.log
 *.log.*

@@ -3,6 +3,7 @@ package com.mermaidline.web.config;
 import com.mermaidline.datasource.config.DataSourceConfig;
 import com.mermaidline.repository.config.RepositoryConfig;
 import com.mermaidline.security.config.SecurityConfig;
+import com.mermaidline.service.config.ServiceConfig;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -25,6 +26,7 @@ public class MessageWebApplicationInitializer extends AbstractAnnotationConfigDi
         return new Class<?>[]{
                 DataSourceConfig.class,
                 RepositoryConfig.class,
+                ServiceConfig.class,
                 SecurityConfig.class,
                 AppConfig.class
         };

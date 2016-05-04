@@ -1,17 +1,22 @@
 <%--
   404 requested resource not available.
   User: Bill Lv (Lv, Chao)
-  Date: 2014/12/8
+  Date: 2014/12/17
   Time: 16:54
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>人鱼线后台管理系统</title>
-  <link rel="stylesheet" href="libs/semantic-ui/dist/semantic.min.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="Disallow">
+  <meta name="author" content="lvchao, billcc.lv@hotmail.com">
+  <meta name="copyright" content="http://renyuxian.mobi/">
+  <title>人鱼线运营后台管理系统</title>
+  <c:set value="${pageContext.request.contextPath}" var="contextPath"/>
+  <link rel="shortcut icon" type="image/png" href="${contextPath}/assets/images/favicon.png">
+  <link rel="stylesheet" href="${contextPath}/libs/semantic-ui/dist/semantic.min.css">
 </head>
 <body>
 <div class="ignored ui error message">未找到页面</div>

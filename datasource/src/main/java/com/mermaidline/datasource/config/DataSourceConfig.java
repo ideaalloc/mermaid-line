@@ -26,10 +26,10 @@ import java.beans.PropertyVetoException;
         @PropertySource("classpath:/c3p0.properties")
 })
 public class DataSourceConfig {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceConfig.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(DataSourceConfig.class);
 
     @Autowired
-    private Environment env;
+    Environment env;
 
     @Bean
     public DataSource dataSource() {

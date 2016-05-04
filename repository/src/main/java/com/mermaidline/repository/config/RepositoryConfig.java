@@ -1,15 +1,13 @@
 package com.mermaidline.repository.config;
 
-import org.jooq.SQLDialect;
-import org.jooq.impl.DataSourceConnectionProvider;
-import org.jooq.impl.DefaultConfiguration;
-import org.jooq.impl.DefaultDSLContext;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -25,10 +23,11 @@ import javax.sql.DataSource;
  */
 @Configuration
 @ComponentScan(basePackages = {"org.mermaidline.repository"})
+@MapperScan("com.mermaidline.repository.dao")
 @EnableTransactionManagement
 public class RepositoryConfig {
     @Autowired
-    private DataSource dataSource;
+    DataSource dataSource;
 
     @Bean
     public DataSourceTransactionManager transactionManager() {
@@ -36,26 +35,10 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public TransactionAwareDataSourceProxy transactionAwareDataSource() {
-        return new TransactionAwareDataSourceProxy(dataSource);
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
+        SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
+        sessionFactoryBean.setDataSource(dataSource);
+        sessionFactoryBean.setTypeAliasesPackage("org.mermaidline.repository.po");
+        return sessionFactoryBean.getObject();
     }
-
-    @Bean
-    public DataSourceConnectionProvider connectionProvider() {
-        return new DataSourceConnectionProvider(transactionAwareDataSource());
-    }
-
-    @Bean
-    public DefaultConfiguration config() {
-        DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
-        defaultConfiguration.setConnectionProvider(connectionProvider());
-        defaultConfiguration.set(SQLDialect.MYSQL);
-        return defaultConfiguration;
-    }
-
-    @Bean
-    public DefaultDSLContext dsl() {
-        return new DefaultDSLContext(config());
-    }
-
 }

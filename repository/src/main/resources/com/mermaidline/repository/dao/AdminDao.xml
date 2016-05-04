@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mermaidline.repository.dao.AdminDao">
+
+    <cache/>
+
+    <resultMap id="adminMap" type="com.mermaidline.repository.po.Admin">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password"  column="password"/>
+        <result property="enabled"  column="enabled"/>
+        <result property="authority"  column="authority"/>
+        <result property="email"  column="email"/>
+        <result property="phone"  column="phone"/>
+        <result property="sinaAccount"  column="sina_account"/>
+        <result property="weixinAccount"  column="weixin_account"/>
+        <result property="qqAccount"  column="qq_account"/>
+        <result property="avatar"  column="avatar"/>
+        <result property="description"  column="description"/>
+    </resultMap>
+
+    <select id="findByUsername" parameterType="String" resultMap="adminMap" flushCache="true" useCache="false">
+        select id, username, password, enabled, authority, email, phone, sina_account, weixin_account, qq_account, avatar, description
+        from admin where username = #{username}
+    </select>
+</mapper>
