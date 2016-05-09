@@ -1,6 +1,6 @@
 package com.mermaidline.datasource.config;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,9 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
-import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * Title.
@@ -22,8 +24,7 @@ import java.beans.PropertyVetoException;
 @Configuration
 @ComponentScan(basePackages = {"com.mermaidline.datasource"})
 @PropertySources({
-        @PropertySource("classpath:/jdbc.properties"),
-        @PropertySource("classpath:/c3p0.properties")
+        @PropertySource("classpath:/jdbc.properties")
 })
 public class DataSourceConfig {
     static final Logger LOGGER = LoggerFactory.getLogger(DataSourceConfig.class);
@@ -33,21 +34,32 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource dataSource() {
-        ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        try {
-            dataSource.setDriverClass(env.getRequiredProperty("jdbc.driverClassName"));
-        } catch (PropertyVetoException e) {
-            LOGGER.error("Class load exception", e);
-            throw new RuntimeException(e);
-        }
-        dataSource.setJdbcUrl(env.getRequiredProperty("jdbc.url"));
-        dataSource.setUser(env.getRequiredProperty("jdbc.username"));
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setDriverClassName(env.getRequiredProperty("jdbc.driverClassName"));
+        dataSource.setUrl(env.getRequiredProperty("jdbc.url"));
+        dataSource.setUsername(env.getRequiredProperty("jdbc.username"));
         dataSource.setPassword(env.getRequiredProperty("jdbc.password"));
-        dataSource.setAcquireIncrement(env.getRequiredProperty("c3p0.acquireIncrement", Integer.class));
-        dataSource.setMinPoolSize(env.getRequiredProperty("c3p0.minPoolSize", Integer.class));
-        dataSource.setMaxPoolSize(env.getRequiredProperty("c3p0.maxPoolSize", Integer.class));
-        dataSource.setMaxIdleTime(env.getRequiredProperty("c3p0.maxIdleTime", Integer.class));
-        dataSource.setTestConnectionOnCheckout(env.getRequiredProperty("c3p0.testConnectionOnCheckout", Boolean.class));
+
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+            input = getClass().getClassLoader().getResourceAsStream("druid.properties");
+            prop.load(input);
+        } catch (IOException ex) {
+            LOGGER.error("load druid config file error");
+            throw new RuntimeException("fatal error, caused by druid config error");
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    LOGGER.error("close druid config file error");
+                }
+            }
+        }
+
+        dataSource.configFromPropety(prop);
         return dataSource;
     }
 }
