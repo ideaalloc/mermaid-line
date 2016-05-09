@@ -37,9 +37,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     public WebContentInterceptor webContentInterceptor() {
         WebContentInterceptor interceptor = new WebContentInterceptor();
         interceptor.setCacheSeconds(0);
-        interceptor.setUseExpiresHeader(true);
-        interceptor.setUseCacheControlHeader(true);
-        interceptor.setUseCacheControlNoStore(true);
         return interceptor;
     }
 
