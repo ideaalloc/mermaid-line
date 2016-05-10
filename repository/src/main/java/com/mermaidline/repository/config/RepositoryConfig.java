@@ -38,7 +38,7 @@ public class RepositoryConfig {
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);
-        sessionFactoryBean.setTypeAliasesPackage("org.mermaidline.repository.po");
+        sessionFactoryBean.setTypeAliasesPackage("com.mermaidline.repository.po");
         return sessionFactoryBean.getObject();
     }
 }
