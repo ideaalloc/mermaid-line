@@ -22,7 +22,7 @@ import javax.sql.DataSource;
  * @since 2014-12-16
  */
 @Configuration
-@ComponentScan(basePackages = {"org.mermaidline.repository"})
+@ComponentScan(basePackages = {"com.mermaidline.repository"})
 @MapperScan("com.mermaidline.repository.dao")
 @EnableTransactionManagement
 public class RepositoryConfig {
